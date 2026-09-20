@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled class file
 *.class
 
@@ -23,3 +24,7 @@
 hs_err_pid*
 replay_pid*
 out/
+=======
+out/ 
+out/ 
+>>>>>>> 3f7c1914b540b8cedba793b996d258794b19ec78
