@@ -1,38 +1,30 @@
 package dao;
 
 import Model.User;
-import util.DBConnection;
-
-import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
+    // Khaali list se shuru karenge
+    private static List<User> userList = new ArrayList<>();
 
-    // 1. ADD USER
-    public void addUser(User user) {
-        String sql = "INSERT INTO users (user_id, name) VALUES (?, ?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getUserId());
-            stmt.setString(2, user.getName());
-            stmt.executeUpdate();
-            System.out.println("User added successfully!");
-        } catch (SQLException e) {
-            e.printStackTrace();
+    // 1. REGISTER USER
+    public boolean registerUser(User user) {
+        for (User u : userList) {
+            if (u.getUserId().equalsIgnoreCase(user.getUserId())) {
+                return false; // Duplicate found
+            }
         }
+        userList.add(user);
+        return true;
     }
 
-    // 2. GET USER BY ID
-    public User getUserById(String userId) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new User(rs.getString("user_id"), rs.getString("name"));
+    // 2. LOGIN USER
+    public User loginUser(String userId, String password) {
+        for (User u : userList) {
+            if (u.getUserId().equals(userId) && u.getPassword().equals(password)) {
+                return u;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
